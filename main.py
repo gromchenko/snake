@@ -2,6 +2,7 @@ import pygame, pygame_menu
 import time
 import random
 import math
+
 class Snake:
     pygame.init()
     menu = ''
@@ -22,6 +23,8 @@ class Snake:
     user_name = ''
     font_style = pygame.font.SysFont("bahnschrift", 25)
     score_font = pygame.font.SysFont("comicsansms", 35)
+    mode_time = False
+    t = ''
 
     def Your_score(self, score): # метод Your_score выводит количество очков для игрока
         t = str(math.ceil(time.time() - self.start_time))
@@ -41,6 +44,9 @@ class Snake:
         self.gameLoop()
 
     def start_the_game(self):
+        #if self.mode_time == False:
+        self.start_time = time.time()
+         #   self.mode_time == True
         print('close')
         self.menu.disable()
         pass
@@ -64,11 +70,18 @@ class Snake:
         Length_of_snake = 1
         foodx = round(random.randrange(100, self.dis_width - self.snake_block) / 10.0) * 10.0 - 10
         foody = round(random.randrange(100, self.dis_height - self.snake_block) / 10.0) * 10.0 - 10
+       # i = 0
         while not game_over:
+
+
             # print(Length_of_snake)
             while game_close == True:
                 self.dis.fill(self.blue)
-                self.message("ВЫ ВЫИГРАЛИ", self.green)
+
+                if self.mode_time == False:
+                    self.t = str(math.ceil(time.time() - self.start_time))
+                    self.mode_time = True
+                self.message("ВЫ ВЫИГРАЛИ ВРЕМЯ ИГРЫ: "+self.t, self.green)
                 self.Your_score(Length_of_snake - 1)
                 pygame.display.update()
                 for event in pygame.event.get():
@@ -82,7 +95,9 @@ class Snake:
                 if event.type == pygame.QUIT:
                     game_over = True
                 if event.type == pygame.KEYDOWN:
+
                     if event.key == pygame.K_LEFT:
+
                         x1_change = -self.snake_block
                         y1_change = 0
                     elif event.key == pygame.K_RIGHT:
